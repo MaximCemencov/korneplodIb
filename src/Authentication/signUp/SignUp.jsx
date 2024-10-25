@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./../auth.css";
 import { validateNameField, validateLogin, validatePassword} from "./../../domain/authentication";
+import axios from "axios";
 
 const SignUp = () => {
     const [firstName, setFirstName] = useState("");
@@ -16,7 +17,7 @@ const SignUp = () => {
         userPassword: ""
     });
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {
             firstName: validateNameField(firstName) || "",
             lastName: validateNameField(lastName) || "",
@@ -30,9 +31,28 @@ const SignUp = () => {
         const isValid = Object.values(newErrors).every(error => !error);
         if (isValid) {
             alert("Форма прошла валидацию. Отправляем данные");
+
+            const postData = {
+                firstName: firstName,
+                lastName: lastName,
+                middleName: middleName,
+                userLogin: userLogin,
+                userPassword: userPassword
+            };
+            console.log(postData);
+            try {
+                const response = await axios.post('/signUp', postData);
+                response()
+                if (response.status === 200) {
+                    console.log(response.data);
+                    return true;
+                }
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
         }
     };
-
     return (
         <div className="form-container">
             <h1>Регистрация</h1>
@@ -40,7 +60,7 @@ const SignUp = () => {
                 <div className="input-wrapper">
                     <input
                         type="text"
-                        placeholder="First Name"
+                        placeholder="Имя"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         className="input-field"
@@ -51,7 +71,7 @@ const SignUp = () => {
                 <div className="input-wrapper">
                     <input
                         type="text"
-                        placeholder="Last Name"
+                        placeholder="Отчество"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         className="input-field"
@@ -62,7 +82,7 @@ const SignUp = () => {
                 <div className="input-wrapper">
                     <input
                         type="text"
-                        placeholder="Middle Name"
+                        placeholder="Фамилия"
                         value={middleName}
                         onChange={(e) => setMiddleName(e.target.value)}
                         className="input-field"
@@ -74,7 +94,7 @@ const SignUp = () => {
                 <div className="input-wrapper">
                     <input
                         type="text"
-                        placeholder="User Login"
+                        placeholder="Почта"
                         value={userLogin}
                         onChange={(e) => setUserLogin(e.target.value)}
                         className="input-field"
@@ -84,8 +104,8 @@ const SignUp = () => {
 
                 <div className="input-wrapper">
                     <input
-                        type="password"
-                        placeholder="User Password"
+                        type="Пароль"
+                        placeholder="Пароль"
                         value={userPassword}
                         onChange={(e) => setUserPassword(e.target.value)}
                         className="input-field"
@@ -94,6 +114,7 @@ const SignUp = () => {
                 </div>
             </div>
             <button onClick={handleSubmit} className="submit-button">Send reg</button>
+            
         </div>
     );
 };

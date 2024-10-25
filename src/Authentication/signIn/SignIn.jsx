@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "./../auth.css";
 import { validateLogin, validatePassword} from "./../../domain/authentication";
+import axios from "axios";
 
 const SignIn = () => {
     const [userLogin, setUserLogin] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [errors, setErrors] = useState({ userLogin: "", userPassword: "" });
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {
             userLogin: validateLogin(userLogin) || "",
             userPassword: validatePassword(userPassword) || ""
@@ -19,6 +20,21 @@ const SignIn = () => {
         if (isValid) {
             alert("Форма прошла валидацию. Отправляем данные");
         }
+        const postData = {
+            userLogin: userLogin,
+            userPassword: userPassword
+        };
+        try {
+            const response = await axios.post('/signIn', postData);
+            response()
+            if (response.status === 200) {
+                console.log(response.data);
+                return true;
+            }
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
     };
 
     return (
@@ -28,7 +44,7 @@ const SignIn = () => {
                 <div className="input-wrapper">
                     <input
                         type="text"
-                        placeholder="User Login"
+                        placeholder="Почта"
                         value={userLogin}
                         onChange={(e) => setUserLogin(e.target.value)}
                         className="input-field"
@@ -39,7 +55,7 @@ const SignIn = () => {
                 <div className="input-wrapper">
                     <input
                         type="password"
-                        placeholder="User Password"
+                        placeholder="Пароль"
                         value={userPassword}
                         onChange={(e) => setUserPassword(e.target.value)}
                         className="input-field"
