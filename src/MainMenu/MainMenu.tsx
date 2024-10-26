@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const MainMenu = () => {
-    // Создаем состояния для каждого поля
     const [direction, setDirection] = useState('');
     const [date, setDate] = useState('');
     const [wagonType, setWagonType] = useState('');
