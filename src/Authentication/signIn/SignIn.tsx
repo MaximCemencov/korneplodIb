@@ -32,8 +32,6 @@ const SignIn: React.FC<SignInProps> = ({ toggleRender }) => {
                     postData,
                     {headers:{"Content-Type": "application/json"}});
                 if (response.status === 200) {
-                    console.log(response.data.token);
-                    console.log(response.status)
                     authStore.login(); // Вызов функции login
                     return true;
                 }
