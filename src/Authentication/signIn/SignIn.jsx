@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import "./../auth.css";
-import { validateLogin, validatePassword} from "./../../domain/authentication";
+import { validateRequired } from "./../../domain/authentication";
 import axios from "axios";
 
-const SignIn = () => {
+const SignIn = ({toggleRender}) => {
     const [userLogin, setUserLogin] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [errors, setErrors] = useState({ userLogin: "", userPassword: "" });
 
     const handleSubmit = async () => {
         const newErrors = {
-            userLogin: validateLogin(userLogin) || "",
-            userPassword: validatePassword(userPassword) || ""
+            global: validateRequired(userLogin, userPassword) || "", 
         };
 
         setErrors(newErrors);
@@ -36,7 +35,9 @@ const SignIn = () => {
             return false;
         }
     };
-
+    // const globalStyleError = {
+    //     border: (errors.global) ? "1px solid red" : '1px solid #fafafa'
+    // }
     return (
         <div className="form-container">
             <h1>Авторизация</h1>
@@ -47,9 +48,9 @@ const SignIn = () => {
                         placeholder="Почта"
                         value={userLogin}
                         onChange={(e) => setUserLogin(e.target.value)}
-                        className="input-field"
+                        className="input-field" 
+                        // style={globalStyleError}
                     />
-                    {errors.userLogin && <span className="error">{errors.userLogin}</span>}
                 </div>
 
                 <div className="input-wrapper">
@@ -59,11 +60,16 @@ const SignIn = () => {
                         value={userPassword}
                         onChange={(e) => setUserPassword(e.target.value)}
                         className="input-field"
+                        // style={globalStyleError}
                     />
-                    {errors.userPassword && <span className="error">{errors.userPassword}</span>}
                 </div>
             </div>
+            <div className="nextStap">
+                <p className="nextStap_verif">Нет аккаунта?</p>
+                <p className="nextStap_render" onClick={toggleRender}>Зарегистрироваться</p>
+            </div>
             <button onClick={handleSubmit} className="submit-button">Send log</button>
+            {errors.global && <span className="error">Заполните все поля</span>}
         </div>
     );
 };
