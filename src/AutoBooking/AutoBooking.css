@@ -1,0 +1,51 @@
+/* AutoBooking.css */
+
+.booking-settings {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid red;
+    width: 500px;
+    margin: 20px auto 0;
+}
+.wrapped {
+    display: flex;
+    flex-wrap: wrap;
+}
+label {
+    display: block;
+    margin: 10px 0;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.statusMessage {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline;
+    width: 100%;
+}
+
+.statusMessage.success {
+    color: #fff;
+    background-color: #4CAF50;
+}
+
+.statusMessage.error {
+    color: #fff;
+    background-color: #f44336;
+}
