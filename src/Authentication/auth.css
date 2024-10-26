@@ -3,7 +3,14 @@
     justify-content: center;
     gap: 50px;
 }
-
+.nextStap_render {
+    padding: 10px 15px;
+    background-color: rgb(75, 75, 221);
+    cursor: pointer;
+    display: inline;
+    border-radius: 5px;
+    user-select: none;
+}
 .form-container {
     width: 350px;
     margin: 20vh 0 0 0;
@@ -12,9 +19,14 @@
     border-radius: 8px;
     background-color: #fafafa;
 }
-
+input {
+    border: 1px solid red
+}
 .input-group {
     margin-bottom: 15px;
+}
+.submit-button {
+    margin-top: 20px; 
 }
 
 .input-field {

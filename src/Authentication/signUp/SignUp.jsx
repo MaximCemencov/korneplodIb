@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./../auth.css";
-import { validateNameField, validateLogin, validatePassword} from "./../../domain/authentication";
+import { validateRequired } from "./../../domain/authentication";
 import axios from "axios";
 
-const SignUp = () => {
+const SignUp = ({toggleRender}) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [middleName, setMiddleName] = useState("");
@@ -15,19 +15,13 @@ const SignUp = () => {
         middleName: "",
         userLogin: "",
         userPassword: ""
-    });
-
+    }); 
     const handleSubmit = async () => {
         const newErrors = {
-            firstName: validateNameField(firstName) || "",
-            lastName: validateNameField(lastName) || "",
-            middleName: validateNameField(middleName) || "",
-            userLogin: validateLogin(userLogin) || "",
-            userPassword: validatePassword(userPassword) || ""
+            global: validateRequired(firstName, lastName, middleName, userLogin, userPassword) || "",
         };
 
         setErrors(newErrors);
-
         const isValid = Object.values(newErrors).every(error => !error);
         if (isValid) {
             alert("Форма прошла валидацию. Отправляем данные");
@@ -41,7 +35,7 @@ const SignUp = () => {
             };
             console.log(postData);
             try {
-                const response = await axios.post('/signUp', postData);
+                const response = await axios.post('/user/register', postData);
                 response()
                 if (response.status === 200) {
                     console.log(response.data);
@@ -51,8 +45,10 @@ const SignUp = () => {
                 console.error(error);
                 return false;
             }
+        } else {
+            alert('Заполните все поля правильно')
         }
-    };
+    }; 
     return (
         <div className="form-container">
             <h1>Регистрация</h1>
@@ -65,7 +61,6 @@ const SignUp = () => {
                         onChange={(e) => setFirstName(e.target.value)}
                         className="input-field"
                     />
-                    {errors.firstName && <span className="error">{errors.firstName}</span>}
                 </div>
 
                 <div className="input-wrapper">
@@ -76,7 +71,6 @@ const SignUp = () => {
                         onChange={(e) => setLastName(e.target.value)}
                         className="input-field"
                     />
-                    {errors.lastName && <span className="error">{errors.lastName}</span>}
                 </div>
 
                 <div className="input-wrapper">
@@ -87,7 +81,6 @@ const SignUp = () => {
                         onChange={(e) => setMiddleName(e.target.value)}
                         className="input-field"
                     />
-                    {errors.middleName && <span className="error">{errors.middleName}</span>}
                 </div>
             </div>
             <div className="input-group">
@@ -99,7 +92,6 @@ const SignUp = () => {
                         onChange={(e) => setUserLogin(e.target.value)}
                         className="input-field"
                     />
-                    {errors.userLogin && <span className="error">{errors.userLogin}</span>}
                 </div>
 
                 <div className="input-wrapper">
@@ -110,11 +102,15 @@ const SignUp = () => {
                         onChange={(e) => setUserPassword(e.target.value)}
                         className="input-field"
                     />
-                    {errors.userPassword && <span className="error">{errors.userPassword}</span>}
                 </div>
             </div>
+            <div className="nextStap">
+                <p className="nextStap_verif">Есть аккаунт?</p>
+                <p className="nextStap_render" onClick={toggleRender}>Войти</p>
+            </div>
             <button onClick={handleSubmit} className="submit-button">Send reg</button>
-            
+            {errors.global && <span className="error">Заполните все поля</span>}
+
         </div>
     );
 };
